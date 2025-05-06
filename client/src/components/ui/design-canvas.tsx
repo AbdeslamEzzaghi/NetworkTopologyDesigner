@@ -42,16 +42,12 @@ export function DesignCanvas({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // We'll use a different approach for device icons
-  // Instead of using canvas and creating Image objects,
-  // we'll render device icons directly using Konva shapes
-  
+  // Render device icons using Material Icon symbol
   const renderDeviceIcon = (deviceType: string) => {
     const iconData = DEVICE_TYPES.find(d => d.id === deviceType);
     
     if (!iconData) return null;
     
-    // We'll render a simple circle with the device type's first letter
     return (
       <>
         {/* Circle background */}
@@ -62,11 +58,11 @@ export function DesignCanvas({
           strokeWidth={2}
         />
         
-        {/* Device type initial */}
+        {/* Material Icon */}
         <Text
-          text={deviceType.charAt(0).toUpperCase()}
-          fontSize={18}
-          fontStyle="bold"
+          text={iconData.icon}
+          fontFamily="Material Icons"
+          fontSize={20}
           fill="#3f51b5"
           align="center"
           verticalAlign="middle"
