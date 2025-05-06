@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 240 83.3% 47.1%; /* #3f51b5 - Primary Color */
+  --primary-foreground: 211 100% 99%;
+  --secondary: 36 100% 50%; /* #ff9800 - Secondary Color */
+  --secondary-foreground: 210 40% 98%;
+  --accent: 240 83.3% 47.1%; /* Same as primary */
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 240 83.3% 47.1%; /* Same as primary */
+  --radius: 0.5rem;
+  --chart-1: 240 83.3% 47.1%;
+  --chart-2: 36 100% 50%;
+  --chart-3: 120 100% 30%;
+  --chart-4: 280 100% 50%;
+  --chart-5: 30 100% 50%;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 20 14.3% 4.1%;
+  --sidebar-primary: 240 83.3% 47.1%;
+  --sidebar-primary-foreground: 211 100% 99%;
+  --sidebar-accent: 240 83.3% 47.1%;
+  --sidebar-accent-foreground: 24 9.8% 10%;
+  --sidebar-border: 20 5.9% 90%;
+  --sidebar-ring: 240 83.3% 47.1%;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 240 83.3% 57.1%; /* Brighter in dark mode */
+  --primary-foreground: 211 100% 99%;
+  --secondary: 36 100% 60%; /* Brighter in dark mode */
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 83.3% 57.1%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 83.3% 57.1%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+/* Specific styles for the network design tool */
+.device {
+  cursor: grab;
+  transition: transform 0.1s;
+}
+
+.device:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+}
+
+.device-canvas {
+  cursor: grab;
+}
+
+.device-canvas.dragging {
+  cursor: grabbing;
+}
+
+.device-canvas.connection-mode {
+  cursor: crosshair;
+}
+
+.connection-line {
+  pointer-events: none;
+}
+
+/* Device icons container */
+.device-icons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+/* Floor plan container */
+.floor-plan {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  object-fit: contain;
+  opacity: 0.3;
+}

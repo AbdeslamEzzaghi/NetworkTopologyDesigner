@@ -1,0 +1,51 @@
+export interface DeviceType {
+  id: string;
+  name: string;
+  icon: string;
+}
+
+export interface Device {
+  id: string;
+  type: string;
+  label: string;
+  x: number;
+  y: number;
+}
+
+export enum ConnectionType {
+  WIRED = 'wired',
+  WIRELESS = 'wireless',
+}
+
+export interface Connection {
+  id: string;
+  sourceId: string;
+  targetId: string;
+  type: ConnectionType;
+}
+
+export interface NetworkDesign {
+  devices: Device[];
+  connections: Connection[];
+  floorPlan: string;
+  name: string;
+}
+
+export interface FloorPlan {
+  id: string;
+  name: string;
+  src: string;
+}
+
+export interface ConnectionMode {
+  active: boolean;
+  type: ConnectionType | null;
+  sourceId: string | null;
+}
+
+export type HistoryAction = {
+  type: 'ADD_DEVICE' | 'REMOVE_DEVICE' | 'MOVE_DEVICE' | 'ADD_CONNECTION' | 'REMOVE_CONNECTION' | 'CHANGE_FLOOR_PLAN' | 'RENAME_DEVICE';
+  payload: any;
+  undo: () => void;
+  redo: () => void;
+};
