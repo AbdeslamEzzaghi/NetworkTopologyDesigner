@@ -15,6 +15,10 @@ export interface Device {
 export enum ConnectionType {
   WIRED = 'wired',
   WIRELESS = 'wireless',
+  RJ11 = 'rj11',
+  RJ45 = 'rj45',
+  FIBER = 'fiber',
+  PHONE = 'phone',
 }
 
 export interface Connection {

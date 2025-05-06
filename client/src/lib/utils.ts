@@ -61,7 +61,8 @@ export const DEFAULT_FLOOR_PLANS = [
 
 export const DEVICE_TYPES = [
   { id: 'router', name: 'Router', icon: 'router' },
-  { id: 'modem', name: 'Modem', icon: 'router' },
+  { id: 'modem', name: 'Modem', icon: 'settings_input_hdmi' },
+  { id: 'ont', name: 'ONT', icon: 'lan' },
   { id: 'switch', name: 'Switch', icon: 'device_hub' },
   { id: 'access_point', name: 'Access Point', icon: 'wifi' },
   { id: 'repeater', name: 'Repeater', icon: 'signal_cellular_alt' },
@@ -70,6 +71,7 @@ export const DEVICE_TYPES = [
   { id: 'laptop', name: 'Laptop', icon: 'laptop' },
   { id: 'smartphone', name: 'Smartphone', icon: 'smartphone' },
   { id: 'tablet', name: 'Tablet', icon: 'tablet' },
+  { id: 'home_phone', name: 'Home Phone', icon: 'call' },
   { id: 'printer', name: 'Printer', icon: 'print' },
   { id: 'tv', name: 'Smart TV', icon: 'tv' },
 ];
