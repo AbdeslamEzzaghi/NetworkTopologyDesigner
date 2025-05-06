@@ -93,7 +93,7 @@ export function ToolsPanel({
                 disabled={!canRedo}
               >
                 <MaterialIcon icon="redo" className="text-sm mr-1" />
-                Redo
+                {translate('toolsPanel.redo')}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -120,7 +120,7 @@ export function ToolsPanel({
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Zoom out</p>
+              <p>{translate('toolsPanel.zoomOut')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -142,7 +142,7 @@ export function ToolsPanel({
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Zoom in</p>
+              <p>{translate('toolsPanel.zoomIn')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
