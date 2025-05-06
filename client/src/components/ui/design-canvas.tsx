@@ -189,8 +189,18 @@ export function DesignCanvas({
               >
                 <Line
                   points={[source.x, source.y, target.x, target.y]}
-                  stroke={connection.type === ConnectionType.WIRED ? '#3f51b5' : '#ff9800'}
-                  strokeWidth={2}
+                  stroke={(() => {
+                    switch (connection.type) {
+                      case ConnectionType.WIRED: return '#3f51b5'; // Default blue
+                      case ConnectionType.RJ11: return '#f59e0b'; // Amber
+                      case ConnectionType.RJ45: return '#3b82f6'; // Blue
+                      case ConnectionType.FIBER: return '#10b981'; // Green
+                      case ConnectionType.PHONE: return '#6b7280'; // Gray
+                      case ConnectionType.WIRELESS: return '#8b5cf6'; // Purple
+                      default: return '#3f51b5';
+                    }
+                  })()}
+                  strokeWidth={connection.type === ConnectionType.FIBER ? 3 : 2}
                   dash={connection.type === ConnectionType.WIRELESS ? [5, 3] : undefined}
                   lineCap="round"
                   lineJoin="round"
@@ -255,8 +265,18 @@ export function DesignCanvas({
                 
                 return [sourceDevice.x, sourceDevice.y, mouseX, mouseY];
               })()}
-              stroke={connectionMode.type === ConnectionType.WIRED ? '#3f51b5' : '#ff9800'}
-              strokeWidth={2}
+              stroke={(() => {
+                switch (connectionMode.type) {
+                  case ConnectionType.WIRED: return '#3f51b5'; // Default blue
+                  case ConnectionType.RJ11: return '#f59e0b'; // Amber
+                  case ConnectionType.RJ45: return '#3b82f6'; // Blue
+                  case ConnectionType.FIBER: return '#10b981'; // Green
+                  case ConnectionType.PHONE: return '#6b7280'; // Gray
+                  case ConnectionType.WIRELESS: return '#8b5cf6'; // Purple
+                  default: return '#3f51b5';
+                }
+              })()}
+              strokeWidth={connectionMode.type === ConnectionType.FIBER ? 3 : 2}
               dash={connectionMode.type === ConnectionType.WIRELESS ? [5, 3] : undefined}
               lineCap="round"
               opacity={0.7}
