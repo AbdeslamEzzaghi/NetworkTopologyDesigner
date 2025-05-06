@@ -3,6 +3,8 @@ import { Separator } from "@/components/ui/separator";
 import { DEVICE_TYPES } from "@/lib/utils";
 import { ConnectionType } from "@/types/network";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/languageContext";
+import { LanguageSelector } from "@/components/ui/language-selector";
 
 // Material icons from Google Fonts
 const MaterialIcon: React.FC<{ icon: string; className?: string }> = ({ 
@@ -32,10 +34,27 @@ export function DevicePanel({
   onConnectionTypeChange,
   onChangeBackgroundClick
 }: DevicePanelProps) {
+  const { translate } = useLanguage();
+  
+  // Translate device names based on device type
+  const getDeviceName = (deviceId: string) => {
+    switch (deviceId) {
+      case 'computer': return translate('devicePanel.computer');
+      case 'laptop': return translate('devicePanel.laptop');
+      case 'smartphone': return translate('devicePanel.smartphone');
+      case 'router': return translate('devicePanel.router');
+      case 'switch': return translate('devicePanel.switch');
+      case 'server': return translate('devicePanel.server');
+      case 'printer': return translate('devicePanel.printer');
+      default: return deviceId;
+    }
+  };
+  
   return (
     <aside className="w-64 bg-white border-r border-neutral-200 flex flex-col h-full shadow-sm">
-      <div className="p-4 border-b border-neutral-200">
-        <h2 className="font-medium text-lg text-neutral-400">Devices</h2>
+      <div className="p-4 border-b border-neutral-200 flex justify-between items-center">
+        <h2 className="font-medium text-lg text-neutral-400">{translate('devicePanel.title')}</h2>
+        <LanguageSelector />
       </div>
       
       <div className="overflow-y-auto flex-1 p-2">
@@ -48,14 +67,14 @@ export function DevicePanel({
               draggable="true"
             >
               <MaterialIcon icon={device.icon} className="text-primary text-2xl" />
-              <span className="text-sm mt-1">{device.name}</span>
+              <span className="text-sm mt-1">{getDeviceName(device.id)}</span>
             </div>
           ))}
         </div>
       </div>
       
       <div className="p-4 border-t border-neutral-200">
-        <h2 className="font-medium text-lg text-neutral-400 mb-2">Connections</h2>
+        <h2 className="font-medium text-lg text-neutral-400 mb-2">{translate('devicePanel.connections')}</h2>
         <div className="flex flex-col space-y-2">
           <Button
             id="wired-connection-btn"
@@ -64,7 +83,7 @@ export function DevicePanel({
             onClick={() => onConnectionTypeChange(ConnectionType.WIRED)}
           >
             <div className="w-6 h-0.5 bg-primary"></div>
-            <span className="ml-2 text-sm">Wired</span>
+            <span className="ml-2 text-sm">{translate('devicePanel.wired')}</span>
           </Button>
           <Button
             id="wireless-connection-btn"
@@ -73,7 +92,7 @@ export function DevicePanel({
             onClick={() => onConnectionTypeChange(ConnectionType.WIRELESS)}
           >
             <div className="w-6 h-0.5 border-t border-dashed border-primary"></div>
-            <span className="ml-2 text-sm">Wireless</span>
+            <span className="ml-2 text-sm">{translate('devicePanel.wireless')}</span>
           </Button>
         </div>
       </div>
@@ -86,7 +105,7 @@ export function DevicePanel({
           onClick={onChangeBackgroundClick}
         >
           <MaterialIcon icon="image" className="text-sm mr-1" />
-          <span className="text-sm">Change Floor Plan</span>
+          <span className="text-sm">{translate('devicePanel.changeBackground')}</span>
         </Button>
       </div>
     </aside>

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useLanguage } from "@/lib/languageContext";
 
 // Material icons from Google Fonts
 const MaterialIcon: React.FC<{ icon: string; className?: string }> = ({ 
@@ -35,6 +36,7 @@ export function ToolsPanel({
   onZoomIn,
   onZoomOut
 }: ToolsPanelProps) {
+  const { translate } = useLanguage();
   return (
     <footer className="bg-white border-t border-neutral-200 py-2 px-4 flex items-center justify-between">
       <div className="flex items-center space-x-3">
@@ -49,7 +51,7 @@ export function ToolsPanel({
                 onClick={onClear}
               >
                 <MaterialIcon icon="delete" className="text-sm mr-1" />
-                Clear All
+                {translate('toolsPanel.clear')}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -70,7 +72,7 @@ export function ToolsPanel({
                 disabled={!canUndo}
               >
                 <MaterialIcon icon="undo" className="text-sm mr-1" />
-                Undo
+                {translate('toolsPanel.undo')}
               </Button>
             </TooltipTrigger>
             <TooltipContent>

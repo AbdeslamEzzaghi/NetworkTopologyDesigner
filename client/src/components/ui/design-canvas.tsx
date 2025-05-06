@@ -3,6 +3,7 @@ import { Stage, Layer, Image, Line, Group, Text, Circle } from 'react-konva';
 import { Device, Connection, ConnectionType } from '@/types/network';
 import { DEVICE_TYPES } from '@/lib/utils';
 import useImage from 'use-image';
+import { useLanguage } from '@/lib/languageContext';
 
 interface DesignCanvasProps {
   devices: Device[];
@@ -37,6 +38,7 @@ export function DesignCanvas({
   onDeviceRename,
   onConnectionRemove
 }: DesignCanvasProps) {
+  const { translate } = useLanguage();
   const [floorPlanImage] = useImage(floorPlan);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -122,7 +124,7 @@ export function DesignCanvas({
     const device = devices.find(d => d.id === deviceId);
     if (!device) return;
     
-    const newName = prompt('Enter device name:', device.label);
+    const newName = prompt(translate('dialog.enterDeviceName'), device.label);
     if (newName !== null && newName.trim() !== '') {
       onDeviceRename(deviceId, newName);
     }
@@ -132,11 +134,11 @@ export function DesignCanvas({
     e.preventDefault();
     
     if (deviceId) {
-      if (confirm('Remove this device?')) {
+      if (confirm(translate('dialog.removeDevice'))) {
         onDeviceRemove(deviceId);
       }
     } else if (connectionId) {
-      if (confirm('Remove this connection?')) {
+      if (confirm(translate('dialog.removeConnection'))) {
         onConnectionRemove(connectionId);
       }
     }
@@ -265,12 +267,12 @@ export function DesignCanvas({
 
       {/* Help tips */}
       <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-sm rounded-lg shadow-md p-4 max-w-xs">
-        <h3 className="font-medium text-neutral-400 mb-2">Tips</h3>
+        <h3 className="font-medium text-neutral-400 mb-2">{translate('canvas.tips.title')}</h3>
         <ul className="text-sm text-neutral-400 space-y-1">
-          <li>• Drag devices from the sidebar</li>
-          <li>• Select connection type and click two devices to connect</li>
-          <li>• Double-click a device to edit its label</li>
-          <li>• Right-click to remove devices or connections</li>
+          <li>• {translate('canvas.tips.dragDevices')}</li>
+          <li>• {translate('canvas.tips.connections')}</li>
+          <li>• {translate('canvas.tips.doubleClick')}</li>
+          <li>• {translate('canvas.tips.rightClick')}</li>
         </ul>
       </div>
     </div>
