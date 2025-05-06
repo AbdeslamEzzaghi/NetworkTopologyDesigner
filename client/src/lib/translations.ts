@@ -16,6 +16,12 @@ type TranslationKey =
   | 'devicePanel.switch'
   | 'devicePanel.server'
   | 'devicePanel.printer'
+  | 'devicePanel.access_point'
+  | 'devicePanel.repeater'
+  | 'devicePanel.isp'
+  | 'devicePanel.modem'
+  | 'devicePanel.tablet'
+  | 'devicePanel.tv'
   | 'devicePanel.connections'
   | 'devicePanel.wired'
   | 'devicePanel.wireless'
@@ -45,6 +51,12 @@ const en: Record<TranslationKey, string> = {
   'devicePanel.switch': 'Switch',
   'devicePanel.server': 'Server',
   'devicePanel.printer': 'Printer',
+  'devicePanel.access_point': 'Access Point',
+  'devicePanel.repeater': 'Repeater',
+  'devicePanel.isp': 'ISP',
+  'devicePanel.modem': 'Modem',
+  'devicePanel.tablet': 'Tablet',
+  'devicePanel.tv': 'Smart TV',
   'devicePanel.connections': 'Connections',
   'devicePanel.wired': 'Wired',
   'devicePanel.wireless': 'Wireless',
@@ -75,6 +87,12 @@ const fr: Record<TranslationKey, string> = {
   'devicePanel.switch': 'Commutateur',
   'devicePanel.server': 'Serveur',
   'devicePanel.printer': 'Imprimante',
+  'devicePanel.access_point': 'Point d\'Accès',
+  'devicePanel.repeater': 'Répéteur',
+  'devicePanel.isp': 'FAI',
+  'devicePanel.modem': 'Modem',
+  'devicePanel.tablet': 'Tablette',
+  'devicePanel.tv': 'Télévision',
   'devicePanel.connections': 'Connexions',
   'devicePanel.wired': 'Filaire',
   'devicePanel.wireless': 'Sans Fil',

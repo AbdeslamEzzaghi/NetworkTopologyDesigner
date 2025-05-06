@@ -46,6 +46,12 @@ export function DevicePanel({
       case 'switch': return translate('devicePanel.switch');
       case 'server': return translate('devicePanel.server');
       case 'printer': return translate('devicePanel.printer');
+      case 'access_point': return translate('devicePanel.access_point');
+      case 'repeater': return translate('devicePanel.repeater');
+      case 'isp': return translate('devicePanel.isp');
+      case 'modem': return translate('devicePanel.modem');
+      case 'tablet': return translate('devicePanel.tablet');
+      case 'tv': return translate('devicePanel.tv');
       default: return deviceId;
     }
   };
