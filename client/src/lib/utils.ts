@@ -30,26 +30,32 @@ export async function exportDiagramAsPDF(stageRef: any, filename: string = "netw
   await exportDiagramAsImage(stageRef, filename);
 }
 
+// Import floor plan assets
+import smallApartmentSrc from '../assets/floorplans/small-apartment.svg';
+import largeHouseSrc from '../assets/floorplans/large-house.svg';
+import officeSpaceSrc from '../assets/floorplans/office-space.svg';
+import schoolBuildingSrc from '../assets/floorplans/school-building.svg';
+
 export const DEFAULT_FLOOR_PLANS = [
   {
     id: 'small-apartment',
     name: 'Small Apartment',
-    src: '/src/assets/floorplans/small-apartment.svg',
+    src: smallApartmentSrc,
   },
   {
     id: 'large-house',
     name: 'Large House',
-    src: '/src/assets/floorplans/large-house.svg',
+    src: largeHouseSrc,
   },
   {
     id: 'office-space',
     name: 'Office Space',
-    src: '/src/assets/floorplans/office-space.svg',
+    src: officeSpaceSrc,
   },
   {
     id: 'school-building',
     name: 'School Building',
-    src: '/src/assets/floorplans/school-building.svg',
+    src: schoolBuildingSrc,
   },
 ];
 

@@ -40,59 +40,44 @@ export function DesignCanvas({
   const [floorPlanImage] = useImage(floorPlan);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
-  const [deviceIcons, setDeviceIcons] = useState<Record<string, HTMLImageElement>>({});
   const [isDragging, setIsDragging] = useState(false);
 
-  // Load device icons
-  useEffect(() => {
-    const loadIcons = async () => {
-      const icons: Record<string, HTMLImageElement> = {};
-      
-      // Create canvas element to draw material icons
-      const canvas = document.createElement('canvas');
-      canvas.width = 48;
-      canvas.height = 48;
-      const ctx = canvas.getContext('2d');
-      
-      if (!ctx) return;
-      
-      // Load icons for each device type
-      for (const deviceType of DEVICE_TYPES) {
-        // Clear canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Set background
-        ctx.fillStyle = '#FFFFFF';
-        ctx.beginPath();
-        ctx.arc(24, 24, 20, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Draw circle border
-        ctx.strokeStyle = '#3f51b5';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(24, 24, 20, 0, Math.PI * 2);
-        ctx.stroke();
-        
-        // Add icon text
-        ctx.fillStyle = '#3f51b5';
-        ctx.font = '24px "Material Icons"';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(deviceType.icon, 24, 24);
-        
-        // Get data URL from canvas and create new image asynchronously
-        const dataUrl = canvas.toDataURL();
-        const image = document.createElement('img');
-        image.src = dataUrl;
-        icons[deviceType.id] = image;
-      }
-      
-      setDeviceIcons(icons);
-    };
+  // We'll use a different approach for device icons
+  // Instead of using canvas and creating Image objects,
+  // we'll render device icons directly using Konva shapes
+  
+  const renderDeviceIcon = (deviceType: string) => {
+    const iconData = DEVICE_TYPES.find(d => d.id === deviceType);
     
-    loadIcons();
-  }, []);
+    if (!iconData) return null;
+    
+    // We'll render a simple circle with the device type's first letter
+    return (
+      <>
+        {/* Circle background */}
+        <Circle
+          radius={20}
+          fill="#FFFFFF"
+          stroke="#3f51b5"
+          strokeWidth={2}
+        />
+        
+        {/* Device type initial */}
+        <Text
+          text={deviceType.charAt(0).toUpperCase()}
+          fontSize={18}
+          fontStyle="bold"
+          fill="#3f51b5"
+          align="center"
+          verticalAlign="middle"
+          width={40}
+          height={40}
+          offsetX={20}
+          offsetY={20}
+        />
+      </>
+    );
+  };
 
   // Update canvas size on resize
   useEffect(() => {
@@ -161,10 +146,6 @@ export function DesignCanvas({
     }
   };
 
-  const getDeviceIcon = (type: string) => {
-    return deviceIcons[type] || null;
-  };
-
   return (
     <div 
       ref={containerRef}
@@ -222,8 +203,6 @@ export function DesignCanvas({
           
           {/* Devices */}
           {devices.map((device) => {
-            const icon = getDeviceIcon(device.type);
-            
             return (
               <Group
                 key={device.id}
@@ -239,15 +218,10 @@ export function DesignCanvas({
                 onDblClick={() => handleDeviceDblClick(device.id)}
                 onContextMenu={(e) => handleContextMenu(e.evt as unknown as React.MouseEvent, device.id, null)}
               >
-                {icon && (
-                  <Image
-                    image={icon}
-                    width={40}
-                    height={40}
-                    offsetX={20}
-                    offsetY={20}
-                  />
-                )}
+                {/* Render device icon directly */}
+                {renderDeviceIcon(device.type)}
+                
+                {/* Device label */}
                 <Text
                   text={device.label}
                   fontSize={12}
