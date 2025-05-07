@@ -88,7 +88,7 @@ export function DevicePanel({
         <h2 className="font-medium text-lg text-neutral-400 mb-2">{translate('devicePanel.connections')}</h2>
         <div className="flex flex-col space-y-2">
           <h3 className="text-sm text-neutral-500 font-medium mb-1">{translate('devicePanel.wired')}</h3>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col space-y-2">
             <Button
               id="rj11-connection-btn"
               variant={connectionMode.active && connectionMode.type === ConnectionType.RJ11 ? "default" : "outline"}
@@ -110,9 +110,7 @@ export function DevicePanel({
               <div className="w-4 h-0.5 bg-blue-500 ml-1"></div>
               <span className="ml-1 text-xs">{translate('devicePanel.connection_rj45')}</span>
             </Button>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-2">
+            
             <Button
               id="fiber-connection-btn"
               variant={connectionMode.active && connectionMode.type === ConnectionType.FIBER ? "default" : "outline"}
