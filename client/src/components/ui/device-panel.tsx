@@ -59,77 +59,84 @@ export function DevicePanel({
   };
   
   return (
-    <aside className="w-64 bg-white border-r border-neutral-200 flex flex-col h-full shadow-sm">
+    <aside className="w-72 bg-white border-r border-neutral-200 flex flex-col h-full shadow-sm">
       <div className="p-4 border-b border-neutral-200 flex justify-between items-center">
         <h2 className="font-medium text-lg text-neutral-400">{translate('devicePanel.title')}</h2>
         <LanguageSelector />
       </div>
       
-      <div className="overflow-y-auto flex-1 p-2">
-        <div className="device-icons">
+      {/* Devices Section */}
+      <div className="p-2 h-1/2 overflow-y-auto">
+        <h3 className="text-sm text-neutral-500 font-medium px-2 mb-2">{translate('devicePanel.title')}</h3>
+        <div className="device-icons grid grid-cols-3 gap-2">
           {DEVICE_TYPES.map((device) => (
             <div 
               key={device.id}
-              className="device bg-neutral-100 p-3 rounded text-center flex flex-col items-center" 
+              className="device bg-neutral-100 p-2 rounded text-center flex flex-col items-center" 
               data-device-type={device.id}
               draggable="true"
             >
-              <MaterialIcon icon={device.icon} className="text-primary text-2xl" />
-              <span className="text-sm mt-1">{getDeviceName(device.id)}</span>
+              <MaterialIcon icon={device.icon} className="text-primary text-xl" />
+              <span className="text-xs mt-1 line-clamp-1">{getDeviceName(device.id)}</span>
             </div>
           ))}
         </div>
       </div>
       
-      <div className="p-4 border-t border-neutral-200">
+      {/* Connections Section */}
+      <div className="p-4 border-t border-neutral-200 h-1/2 overflow-y-auto">
         <h2 className="font-medium text-lg text-neutral-400 mb-2">{translate('devicePanel.connections')}</h2>
         <div className="flex flex-col space-y-2">
-          <h3 className="text-sm text-neutral-500 font-medium mb-1">Wired</h3>
-          <Button
-            id="rj11-connection-btn"
-            variant={connectionMode.active && connectionMode.type === ConnectionType.RJ11 ? "default" : "outline"}
-            className="flex items-center justify-center"
-            onClick={() => onConnectionTypeChange(ConnectionType.RJ11)}
-            size="sm"
-          >
-            <div className="w-4 h-0.5 bg-amber-500"></div>
-            <span className="ml-2 text-sm">{translate('devicePanel.connection_rj11')}</span>
-          </Button>
+          <h3 className="text-sm text-neutral-500 font-medium mb-1">{translate('devicePanel.wired')}</h3>
+          <div className="grid grid-cols-2 gap-2">
+            <Button
+              id="rj11-connection-btn"
+              variant={connectionMode.active && connectionMode.type === ConnectionType.RJ11 ? "default" : "outline"}
+              className="flex items-center justify-start h-9"
+              onClick={() => onConnectionTypeChange(ConnectionType.RJ11)}
+              size="sm"
+            >
+              <div className="w-4 h-0.5 bg-amber-500 ml-1"></div>
+              <span className="ml-1 text-xs">{translate('devicePanel.connection_rj11')}</span>
+            </Button>
+            
+            <Button
+              id="rj45-connection-btn"
+              variant={connectionMode.active && connectionMode.type === ConnectionType.RJ45 ? "default" : "outline"}
+              className="flex items-center justify-start h-9"
+              onClick={() => onConnectionTypeChange(ConnectionType.RJ45)}
+              size="sm"
+            >
+              <div className="w-4 h-0.5 bg-blue-500 ml-1"></div>
+              <span className="ml-1 text-xs">{translate('devicePanel.connection_rj45')}</span>
+            </Button>
+          </div>
           
-          <Button
-            id="rj45-connection-btn"
-            variant={connectionMode.active && connectionMode.type === ConnectionType.RJ45 ? "default" : "outline"}
-            className="flex items-center justify-center"
-            onClick={() => onConnectionTypeChange(ConnectionType.RJ45)}
-            size="sm"
-          >
-            <div className="w-4 h-0.5 bg-blue-500"></div>
-            <span className="ml-2 text-sm">{translate('devicePanel.connection_rj45')}</span>
-          </Button>
+          <div className="grid grid-cols-2 gap-2">
+            <Button
+              id="fiber-connection-btn"
+              variant={connectionMode.active && connectionMode.type === ConnectionType.FIBER ? "default" : "outline"}
+              className="flex items-center justify-start h-9"
+              onClick={() => onConnectionTypeChange(ConnectionType.FIBER)}
+              size="sm"
+            >
+              <div className="w-4 h-0.5 bg-green-500 ml-1"></div>
+              <span className="ml-1 text-xs">{translate('devicePanel.connection_fiber')}</span>
+            </Button>
+            
+            <Button
+              id="phone-connection-btn"
+              variant={connectionMode.active && connectionMode.type === ConnectionType.PHONE ? "default" : "outline"}
+              className="flex items-center justify-start h-9"
+              onClick={() => onConnectionTypeChange(ConnectionType.PHONE)}
+              size="sm"
+            >
+              <div className="w-4 h-0.5 bg-gray-500 ml-1"></div>
+              <span className="ml-1 text-xs">{translate('devicePanel.connection_phone')}</span>
+            </Button>
+          </div>
           
-          <Button
-            id="fiber-connection-btn"
-            variant={connectionMode.active && connectionMode.type === ConnectionType.FIBER ? "default" : "outline"}
-            className="flex items-center justify-center"
-            onClick={() => onConnectionTypeChange(ConnectionType.FIBER)}
-            size="sm"
-          >
-            <div className="w-4 h-0.5 bg-green-500"></div>
-            <span className="ml-2 text-sm">{translate('devicePanel.connection_fiber')}</span>
-          </Button>
-          
-          <Button
-            id="phone-connection-btn"
-            variant={connectionMode.active && connectionMode.type === ConnectionType.PHONE ? "default" : "outline"}
-            className="flex items-center justify-center"
-            onClick={() => onConnectionTypeChange(ConnectionType.PHONE)}
-            size="sm"
-          >
-            <div className="w-4 h-0.5 bg-gray-500"></div>
-            <span className="ml-2 text-sm">{translate('devicePanel.connection_phone')}</span>
-          </Button>
-          
-          <h3 className="text-sm text-neutral-500 font-medium mt-3 mb-1">Wireless</h3>
+          <h3 className="text-sm text-neutral-500 font-medium mt-2 mb-1">{translate('devicePanel.wireless')}</h3>
           <Button
             id="wireless-connection-btn"
             variant={connectionMode.active && connectionMode.type === ConnectionType.WIRELESS ? "default" : "outline"}
@@ -138,7 +145,7 @@ export function DevicePanel({
             size="sm"
           >
             <div className="w-6 h-0.5 border-t border-dashed border-purple-500"></div>
-            <span className="ml-2 text-sm">{translate('devicePanel.wireless')}</span>
+            <span className="ml-2 text-xs">{translate('devicePanel.wireless')}</span>
           </Button>
         </div>
       </div>
