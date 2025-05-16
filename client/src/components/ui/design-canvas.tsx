@@ -213,24 +213,41 @@ export function DesignCanvas({
                 onContextMenu={(e) => handleContextMenu(e.evt as unknown as React.MouseEvent, null, connection.id)}
               >
                 {isBusConnection ? (
-                  // For standalone Bus, render an arc above the device
+                  // For standalone Bus, render a bus termination with icon
                   <>
-                    <Circle 
+                    <Group
                       x={source.x}
-                      y={source.y - 30}
-                      radius={15}
-                      stroke={getConnectionColor()}
-                      strokeWidth={getStrokeWidth()}
-                      dash={[3, 2]}
-                    />
-                    <Text
-                      x={source.x - 35}
-                      y={source.y - 55}
-                      text="Bus"
-                      fontSize={12}
-                      fill={getConnectionColor()}
-                      align="center"
-                    />
+                      y={source.y - 40}
+                    >
+                      {/* Bus Termination Icon */}
+                      <Circle
+                        radius={20}
+                        fill="#FFFFFF"
+                        stroke={getConnectionColor()}
+                        strokeWidth={3}
+                      />
+                      <Text
+                        text="settings_input_composite"
+                        fontFamily="Material Icons"
+                        fontSize={20}
+                        fill={getConnectionColor()}
+                        align="center"
+                        verticalAlign="middle"
+                        width={40}
+                        height={40}
+                        offsetX={20}
+                        offsetY={20}
+                      />
+                      <Text
+                        y={35}
+                        text="Extrémité du Bus"
+                        fontSize={10}
+                        fill={getConnectionColor()}
+                        align="center"
+                        width={80}
+                        offsetX={40}
+                      />
+                    </Group>
                   </>
                 ) : (
                   // Normal connection rendering
