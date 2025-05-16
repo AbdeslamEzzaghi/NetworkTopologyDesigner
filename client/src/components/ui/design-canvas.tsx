@@ -238,15 +238,7 @@ export function DesignCanvas({
                         offsetX={20}
                         offsetY={20}
                       />
-                      <Text
-                        y={35}
-                        text="Extrémité du Bus"
-                        fontSize={10}
-                        fill={getConnectionColor()}
-                        align="center"
-                        width={80}
-                        offsetX={40}
-                      />
+
                     </Group>
                   </>
                 ) : (
