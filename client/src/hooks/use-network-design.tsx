@@ -3,6 +3,9 @@ import { Device, Connection, ConnectionType, HistoryAction, ConnectionMode } fro
 import { generateId, DEFAULT_FLOOR_PLANS } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
+// Constants for unit conversion
+export const PIXELS_PER_METER = 10; // 10 pixels = 1 meter
+
 export function useNetworkDesign() {
   const [devices, setDevices] = useState<Device[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
@@ -295,6 +298,32 @@ export function useNetworkDesign() {
       payload: connectionToRemove,
       undo: () => setConnections(prev => [...prev, connectionToRemove]),
       redo: () => setConnections(prev => prev.filter(c => c.id !== connectionId))
+    };
+    
+    addToHistory(action);
+  }, [connections]);
+  
+  // Update connection properties (like Wi-Fi range)
+  const updateConnection = useCallback((connectionId: string, properties: Partial<Connection>) => {
+    const connectionToUpdate = connections.find(c => c.id === connectionId);
+    if (!connectionToUpdate) return;
+    
+    const updatedConnection = { ...connectionToUpdate, ...properties };
+    
+    setConnections(prev => 
+      prev.map(c => c.id === connectionId ? updatedConnection : c)
+    );
+    
+    // Add to history
+    const action: HistoryAction = {
+      type: 'UPDATE_CONNECTION',
+      payload: { oldConnection: connectionToUpdate, newConnection: updatedConnection },
+      undo: () => setConnections(prev => 
+        prev.map(c => c.id === connectionId ? connectionToUpdate : c)
+      ),
+      redo: () => setConnections(prev => 
+        prev.map(c => c.id === connectionId ? updatedConnection : c)
+      )
     };
     
     addToHistory(action);
