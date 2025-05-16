@@ -197,10 +197,11 @@ export function DesignCanvas({
                       case ConnectionType.FIBER: return '#10b981'; // Green
                       case ConnectionType.PHONE: return '#6b7280'; // Gray
                       case ConnectionType.WIRELESS: return '#8b5cf6'; // Purple
+                      case ConnectionType.MAIN_CABLE: return '#ef4444'; // Red
                       default: return '#3f51b5';
                     }
                   })()}
-                  strokeWidth={connection.type === ConnectionType.FIBER ? 3 : 2}
+                  strokeWidth={connection.type === ConnectionType.FIBER ? 3 : (connection.type === ConnectionType.MAIN_CABLE ? 4 : 2)}
                   dash={connection.type === ConnectionType.WIRELESS ? [5, 3] : undefined}
                   lineCap="round"
                   lineJoin="round"

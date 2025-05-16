@@ -19,6 +19,7 @@ export enum ConnectionType {
   RJ45 = 'rj45',
   FIBER = 'fiber',
   PHONE = 'phone',
+  MAIN_CABLE = 'main_cable',
 }
 
 export interface Connection {

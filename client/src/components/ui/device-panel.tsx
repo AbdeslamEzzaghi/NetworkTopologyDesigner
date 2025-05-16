@@ -54,6 +54,7 @@ export function DevicePanel({
       case 'home_phone': return translate('devicePanel.home_phone');
       case 'tablet': return translate('devicePanel.tablet');
       case 'tv': return translate('devicePanel.tv');
+      case 'wall_phone_jack': return translate('devicePanel.wall_phone_jack');
       default: return deviceId;
     }
   };
@@ -131,6 +132,17 @@ export function DevicePanel({
             >
               <div className="w-4 h-0.5 bg-gray-500 ml-1"></div>
               <span className="ml-1 text-xs">{translate('devicePanel.connection_phone')}</span>
+            </Button>
+            
+            <Button
+              id="main-cable-connection-btn"
+              variant={connectionMode.active && connectionMode.type === ConnectionType.MAIN_CABLE ? "default" : "outline"}
+              className="flex items-center justify-start h-9"
+              onClick={() => onConnectionTypeChange(ConnectionType.MAIN_CABLE)}
+              size="sm"
+            >
+              <div className="w-4 h-1 bg-red-500 ml-1"></div>
+              <span className="ml-1 text-xs">{translate('devicePanel.connection_main_cable')}</span>
             </Button>
           </div>
           
