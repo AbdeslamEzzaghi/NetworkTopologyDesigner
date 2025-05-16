@@ -127,6 +127,7 @@ export default function Home() {
           onDeviceRemove={networkDesign.removeDevice}
           onDeviceRename={networkDesign.renameDevice}
           onConnectionRemove={networkDesign.removeConnection}
+          updateConnection={networkDesign.updateConnection}
         />
       </div>
 

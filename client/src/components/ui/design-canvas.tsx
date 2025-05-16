@@ -177,19 +177,32 @@ export function DesignCanvas({
             const size = numericValue / 100;
             
             if (size >= 0.25 && size <= 2.0) {
-              // Update the device size
+              // Create a copy of the device with the new size
               const updatedDevice = { ...device, size };
-              onDeviceRemove(deviceId); // Remove old device
-              onDeviceAdd(device.type, device.x, device.y); // Add new device with same position
               
-              // Update the newly added device with the proper label and size
-              const newDevices = [...devices];
-              const lastDevice = newDevices[newDevices.length - 1];
-              if (lastDevice) {
-                lastDevice.label = device.label;
-                lastDevice.size = size;
-                onDeviceRename(lastDevice.id, device.label);
-              }
+              // We need to properly update this device
+              // First remove the old device
+              onDeviceRemove(deviceId);
+              
+              // Then add a new device at the same position with the same type
+              onDeviceAdd(device.type, device.x, device.y);
+              
+              // Now find the newly added device (it will be the last one in the devices array)
+              // and update its properties to match the old device plus the new size
+              setTimeout(() => {
+                const newDevices = [...devices];
+                if (newDevices.length > 0) {
+                  const lastDevice = newDevices[newDevices.length - 1];
+                  if (lastDevice) {
+                    // Update the label to match the original device
+                    onDeviceRename(lastDevice.id, device.label);
+                    
+                    // Note: size should be applied automatically when rendering
+                    // We're using the setTimeout to ensure the device is first added
+                    // before we try to update its properties
+                  }
+                }
+              }, 10);
             } else {
               alert('Size must be between 25% and 200%');
             }
@@ -332,6 +345,9 @@ export function DesignCanvas({
               opacity={0.3}
             />
           )}
+          
+          {/* Scale bar */}
+          {renderScaleBar()}
           
           {/* Connections */}
           {connections.map((connection) => {
