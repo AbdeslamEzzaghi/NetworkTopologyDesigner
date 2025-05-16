@@ -64,7 +64,7 @@ export function DesignCanvas({
     // Make certain devices smaller by default
     let defaultSizeMultiplier = 1;
     if (deviceType === 'bus_closure' || deviceType === 'cable_connector') {
-      defaultSizeMultiplier = 0.7; // 70% of normal size for these small devices
+      defaultSizeMultiplier = 0.5; // 50% of normal size for these small devices
     }
     
     // Apply size multiplier (with special case for small devices)
