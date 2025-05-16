@@ -227,9 +227,9 @@ export function DesignCanvas({
                         strokeWidth={3}
                       />
                       <Text
-                        text="settings_input_composite"
+                        text="memory"
                         fontFamily="Material Icons"
-                        fontSize={20}
+                        fontSize={22}
                         fill={getConnectionColor()}
                         align="center"
                         verticalAlign="middle"
