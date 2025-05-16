@@ -25,6 +25,7 @@ interface DesignCanvasProps {
   onDeviceRemove: (id: string) => void;
   onDeviceRename: (id: string, newName: string) => void;
   onConnectionRemove: (id: string) => void;
+  updateConnection?: (connectionId: string, properties: Partial<Connection>) => void;
 }
 
 export function DesignCanvas({
@@ -39,7 +40,8 @@ export function DesignCanvas({
   onDeviceSelect,
   onDeviceRemove,
   onDeviceRename,
-  onConnectionRemove
+  onConnectionRemove,
+  updateConnection
 }: DesignCanvasProps) {
   const { translate } = useLanguage();
   const [floorPlanImage] = useImage(floorPlan);
@@ -241,16 +243,12 @@ export function DesignCanvas({
         if (newRangeStr) {
           const newRange = parseInt(newRangeStr);
           if (!isNaN(newRange) && newRange >= 5 && newRange <= 50) {
-            // Update the connection range in meters (not modifying actual connections array)
-            const updatedConnections = connections.map(conn => 
-              conn.id === connectionToAdjust.id ? { ...conn, range: newRange } : conn
-            );
-            
-            // Here we should call a function that would update the connection
-            // We can't directly use setConnections since it's not in the props
-            onConnectionRemove(connectionToAdjust.id);
-            // Re-create connection with new range
-            // (Note: Actual implementation would need a proper method for updating connections)
+            // Update the connection range in meters using the updateConnection function
+            if (updateConnection) {
+              updateConnection(connectionToAdjust.id, { range: newRange });
+            } else {
+              alert('Cannot update wireless range. Feature not available.');
+            }
           } else {
             alert('Range must be between 5 and 50 meters');
           }
@@ -261,6 +259,47 @@ export function DesignCanvas({
         onConnectionRemove(connectionId);
       }
     }
+  };
+
+  // Function to render scale bar
+  const renderScaleBar = () => {
+    // Only render if we have a valid canvas size
+    if (canvasSize.width === 0 || canvasSize.height === 0) return null;
+    
+    const scaleBarWidthMeters = 5; // 5 meters
+    const scaleBarWidthPixels = scaleBarWidthMeters * PIXELS_PER_METER;
+    const scaleBarHeight = 10;
+    const padding = 20;
+    
+    return (
+      <Group x={padding} y={canvasSize.height - padding - scaleBarHeight}>
+        {/* Background for better visibility */}
+        <Rect
+          width={scaleBarWidthPixels + 20}
+          height={scaleBarHeight + 30}
+          fill="rgba(255, 255, 255, 0.7)"
+          cornerRadius={5}
+        />
+        
+        {/* Scale bar */}
+        <Rect
+          y={10}
+          width={scaleBarWidthPixels}
+          height={scaleBarHeight}
+          fill="#333"
+        />
+        
+        {/* Scale label */}
+        <Text
+          y={22}
+          text={`${scaleBarWidthMeters} meters`}
+          fontSize={12}
+          fill="#333"
+          align="center"
+          width={scaleBarWidthPixels}
+        />
+      </Group>
+    );
   };
 
   return (
@@ -350,7 +389,7 @@ export function DesignCanvas({
                       <Circle
                         x={source.x}
                         y={source.y}
-                        radius={connection.range || 100}
+                        radius={connection.range * PIXELS_PER_METER}
                         stroke={getConnectionColor()}
                         strokeWidth={1}
                         dash={[2, 2]}

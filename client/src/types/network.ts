@@ -51,7 +51,7 @@ export interface ConnectionMode {
 }
 
 export type HistoryAction = {
-  type: 'ADD_DEVICE' | 'REMOVE_DEVICE' | 'MOVE_DEVICE' | 'ADD_CONNECTION' | 'REMOVE_CONNECTION' | 'CHANGE_FLOOR_PLAN' | 'RENAME_DEVICE';
+  type: 'ADD_DEVICE' | 'REMOVE_DEVICE' | 'MOVE_DEVICE' | 'ADD_CONNECTION' | 'REMOVE_CONNECTION' | 'CHANGE_FLOOR_PLAN' | 'RENAME_DEVICE' | 'UPDATE_CONNECTION';
   payload: any;
   undo: () => void;
   redo: () => void;

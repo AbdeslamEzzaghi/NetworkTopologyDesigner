@@ -489,6 +489,7 @@ export function useNetworkDesign() {
     setConnectionType,
     handleDeviceSelect,
     removeConnection,
+    updateConnection,
     changeFloorPlan,
     undo,
     redo,
