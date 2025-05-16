@@ -197,6 +197,57 @@ export function DesignCanvas({
         if (confirm(translate('dialog.removeDevice'))) {
           onDeviceRemove(deviceId);
         }
+      } else if (action === '3') {
+        // Adjust wireless range
+        // Find all wireless connections where this device is the source
+        const wirelessConnections = connections.filter(
+          conn => conn.sourceId === deviceId && conn.type === ConnectionType.WIRELESS
+        );
+        
+        if (wirelessConnections.length === 0) {
+          alert('No wireless connections found for this device');
+          return;
+        }
+        
+        // Let user select which connection to adjust if there are multiple
+        let connectionToAdjust = wirelessConnections[0];
+        if (wirelessConnections.length > 1) {
+          const targetOptions = wirelessConnections.map((conn, idx) => {
+            const targetDevice = devices.find(d => d.id === conn.targetId);
+            return `${idx + 1}. Connection to ${targetDevice?.label || 'Unknown Device'}`;
+          }).join('\n');
+          
+          const selection = prompt(`Select wireless connection to adjust range:\n${targetOptions}\nEnter option number:`);
+          if (selection) {
+            const idx = parseInt(selection) - 1;
+            if (idx >= 0 && idx < wirelessConnections.length) {
+              connectionToAdjust = wirelessConnections[idx];
+            } else {
+              alert('Invalid selection');
+              return;
+            }
+          } else {
+            return;
+          }
+        }
+        
+        // Get current range and ask for new range
+        const currentRange = connectionToAdjust.range || 100;
+        const newRangeStr = prompt(`Enter new wireless coverage range (50 to 500 pixels).\nCurrent range: ${currentRange} pixels`);
+        
+        if (newRangeStr) {
+          const newRange = parseInt(newRangeStr);
+          if (!isNaN(newRange) && newRange >= 50 && newRange <= 500) {
+            // Update the connection with the new range
+            setConnections(prev => 
+              prev.map(conn => 
+                conn.id === connectionToAdjust.id ? { ...conn, range: newRange } : conn
+              )
+            );
+          } else {
+            alert('Range must be between 50 and 500 pixels');
+          }
+        }
       }
     } else if (connectionId) {
       if (confirm(translate('dialog.removeConnection'))) {
