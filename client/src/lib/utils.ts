@@ -74,4 +74,5 @@ export const DEVICE_TYPES = [
   { id: 'home_phone', name: 'Home Phone', icon: 'call' },
   { id: 'printer', name: 'Printer', icon: 'print' },
   { id: 'tv', name: 'Smart TV', icon: 'tv' },
+  { id: 'wall_phone_jack', name: 'Wall Phone Jack', icon: 'power_input' },
 ];

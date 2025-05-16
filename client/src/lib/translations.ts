@@ -24,6 +24,7 @@ type TranslationKey =
   | 'devicePanel.home_phone'
   | 'devicePanel.tablet'
   | 'devicePanel.tv'
+  | 'devicePanel.wall_phone_jack'
   | 'devicePanel.connections'
   | 'devicePanel.wired'
   | 'devicePanel.wireless'
@@ -32,6 +33,7 @@ type TranslationKey =
   | 'devicePanel.connection_rj45'
   | 'devicePanel.connection_fiber'
   | 'devicePanel.connection_phone'
+  | 'devicePanel.connection_main_cable'
   | 'canvas.tips.title'
   | 'canvas.tips.dragDevices'
   | 'canvas.tips.connections'
@@ -65,6 +67,7 @@ const en: Record<TranslationKey, string> = {
   'devicePanel.home_phone': 'Home Phone',
   'devicePanel.tablet': 'Tablet',
   'devicePanel.tv': 'Smart TV',
+  'devicePanel.wall_phone_jack': 'Wall Phone Jack',
   'devicePanel.connections': 'Connections',
   'devicePanel.wired': 'Wired',
   'devicePanel.wireless': 'Wireless',
@@ -72,6 +75,7 @@ const en: Record<TranslationKey, string> = {
   'devicePanel.connection_rj45': 'RJ45 Cable',
   'devicePanel.connection_fiber': 'Fiber Cable',
   'devicePanel.connection_phone': 'Phone Cable',
+  'devicePanel.connection_main_cable': 'Main Cable',
   'devicePanel.changeBackground': 'Change Background',
   'canvas.tips.title': 'Tips',
   'canvas.tips.dragDevices': 'Drag devices from the sidebar',
@@ -107,6 +111,7 @@ const fr: Record<TranslationKey, string> = {
   'devicePanel.home_phone': 'Téléphone Fixe',
   'devicePanel.tablet': 'Tablette',
   'devicePanel.tv': 'Télévision',
+  'devicePanel.wall_phone_jack': 'Prise téléphonique murale',
   'devicePanel.connections': 'Connexions',
   'devicePanel.wired': 'Filaire',
   'devicePanel.wireless': 'Sans Fil',
@@ -114,6 +119,7 @@ const fr: Record<TranslationKey, string> = {
   'devicePanel.connection_rj45': 'Câble RJ45',
   'devicePanel.connection_fiber': 'Câble Fibre',
   'devicePanel.connection_phone': 'Câble Téléphonique',
+  'devicePanel.connection_main_cable': 'Câble Principal',
   'devicePanel.changeBackground': 'Changer l\'Arrière-plan',
   'canvas.tips.title': 'Astuces',
   'canvas.tips.dragDevices': 'Glisser les périphériques depuis la barre latérale',
