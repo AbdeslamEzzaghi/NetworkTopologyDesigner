@@ -39,6 +39,8 @@ type TranslationKey =
   | 'canvas.tips.connections'
   | 'canvas.tips.doubleClick'
   | 'canvas.tips.rightClick'
+  | 'canvas.tips.minimize'
+  | 'canvas.tips.show'
   | 'dialog.removeDevice'
   | 'dialog.removeConnection'
   | 'dialog.enterDeviceName';
@@ -82,6 +84,8 @@ const en: Record<TranslationKey, string> = {
   'canvas.tips.connections': 'Select connection type and click two devices to connect',
   'canvas.tips.doubleClick': 'Double-click a device to edit its label',
   'canvas.tips.rightClick': 'Right-click to remove devices or connections',
+  'canvas.tips.minimize': 'Minimize',
+  'canvas.tips.show': 'Show Tips',
   'dialog.removeDevice': 'Remove this device?',
   'dialog.removeConnection': 'Remove this connection?',
   'dialog.enterDeviceName': 'Enter device name:',
@@ -126,6 +130,8 @@ const fr: Record<TranslationKey, string> = {
   'canvas.tips.connections': 'Sélectionner le type de connexion et cliquer sur deux périphériques pour les connecter',
   'canvas.tips.doubleClick': 'Double-cliquer sur un périphérique pour modifier son étiquette',
   'canvas.tips.rightClick': 'Clic droit pour supprimer des périphériques ou des connexions',
+  'canvas.tips.minimize': 'Réduire',
+  'canvas.tips.show': 'Afficher les astuces',
   'dialog.removeDevice': 'Supprimer ce périphérique?',
   'dialog.removeConnection': 'Supprimer cette connexion?',
   'dialog.enterDeviceName': 'Entrer le nom du périphérique:',
