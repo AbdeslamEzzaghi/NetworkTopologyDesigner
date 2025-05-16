@@ -1,9 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Stage, Layer, Image, Line, Group, Text, Circle } from 'react-konva';
+import { Stage, Layer, Image, Line, Group, Text, Circle, Rect } from 'react-konva';
 import { Device, Connection, ConnectionType } from '@/types/network';
 import { DEVICE_TYPES } from '@/lib/utils';
 import useImage from 'use-image';
 import { useLanguage } from '@/lib/languageContext';
+
+// Scale conversion: pixels to meters (1 meter = 10 pixels by default)
+const PIXELS_PER_METER = 10;
 
 interface DesignCanvasProps {
   devices: Device[];
@@ -231,21 +234,21 @@ export function DesignCanvas({
           }
         }
         
-        // Get current range and ask for new range
-        const currentRange = connectionToAdjust.range || 100;
-        const newRangeStr = prompt(`Enter new wireless coverage range (50 to 500 pixels).\nCurrent range: ${currentRange} pixels`);
+        // Get current range and ask for new range (in meters)
+        const currentRange = connectionToAdjust.range || 10;
+        const newRangeStr = prompt(`Enter new wireless coverage range (5 to 50 meters).\nCurrent range: ${currentRange} meters`);
         
         if (newRangeStr) {
           const newRange = parseInt(newRangeStr);
-          if (!isNaN(newRange) && newRange >= 50 && newRange <= 500) {
-            // Update the connection with the new range
+          if (!isNaN(newRange) && newRange >= 5 && newRange <= 50) {
+            // Update the connection with the new range in meters
             setConnections(prev => 
               prev.map(conn => 
                 conn.id === connectionToAdjust.id ? { ...conn, range: newRange } : conn
               )
             );
           } else {
-            alert('Range must be between 50 and 500 pixels');
+            alert('Range must be between 5 and 50 meters');
           }
         }
       }
