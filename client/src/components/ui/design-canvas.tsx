@@ -213,34 +213,13 @@ export function DesignCanvas({
                 onContextMenu={(e) => handleContextMenu(e.evt as unknown as React.MouseEvent, null, connection.id)}
               >
                 {isBusConnection ? (
-                  // For standalone Bus, render a bus termination with icon
-                  <>
-                    <Group
-                      x={source.x}
-                      y={source.y - 40}
-                    >
-                      {/* Bus Termination Icon */}
-                      <Circle
-                        radius={20}
-                        fill="#FFFFFF"
-                        stroke={getConnectionColor()}
-                        strokeWidth={3}
-                      />
-                      <Text
-                        text="memory"
-                        fontFamily="Material Icons"
-                        fontSize={22}
-                        fill={getConnectionColor()}
-                        align="center"
-                        verticalAlign="middle"
-                        width={40}
-                        height={40}
-                        offsetX={20}
-                        offsetY={20}
-                      />
-
-                    </Group>
-                  </>
+                  // For standalone Bus, just make it a straight line extending up
+                  <Line
+                    points={[source.x, source.y, source.x, source.y - 40]}
+                    stroke={getConnectionColor()}
+                    strokeWidth={getStrokeWidth()}
+                    lineCap="round"
+                  />
                 ) : (
                   // Normal connection rendering
                   <Line
