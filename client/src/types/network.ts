@@ -28,7 +28,7 @@ export interface Connection {
   sourceId: string;
   targetId: string;
   type: ConnectionType;
-  range?: number; // Wireless coverage range in meters, default is 10
+  range?: number; // Wireless coverage range in meters, default is 20
 }
 
 export interface NetworkDesign {

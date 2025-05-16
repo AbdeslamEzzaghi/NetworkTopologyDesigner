@@ -61,16 +61,23 @@ export function DesignCanvas({
     const isRedDevice = redDevices.includes(deviceType);
     const iconColor = isRedDevice ? '#ef4444' : '#3f51b5';
     
-    // Apply size multiplier
+    // Make certain devices smaller by default
+    let defaultSizeMultiplier = 1;
+    if (deviceType === 'bus_closure' || deviceType === 'cable_connector') {
+      defaultSizeMultiplier = 0.7; // 70% of normal size for these small devices
+    }
+    
+    // Apply size multiplier (with special case for small devices)
     const baseRadius = 20;
     const baseFontSize = 20;
     const baseWidth = 40;
     const baseHeight = 40;
     
-    const radius = baseRadius * size;
-    const fontSize = baseFontSize * size;
-    const width = baseWidth * size;
-    const height = baseHeight * size;
+    const calculatedSize = size * defaultSizeMultiplier;
+    const radius = baseRadius * calculatedSize;
+    const fontSize = baseFontSize * calculatedSize;
+    const width = baseWidth * calculatedSize;
+    const height = baseHeight * calculatedSize;
     
     return (
       <>
@@ -401,11 +408,11 @@ export function DesignCanvas({
                     />
                     
                     {/* Add wireless coverage indication if this is a wireless connection */}
-                    {connection.type === ConnectionType.WIRELESS && connection.range && (
+                    {connection.type === ConnectionType.WIRELESS && (
                       <Circle
                         x={source.x}
                         y={source.y}
-                        radius={connection.range * PIXELS_PER_METER}
+                        radius={(connection.range || 20) * PIXELS_PER_METER}
                         stroke={getConnectionColor()}
                         strokeWidth={1}
                         dash={[2, 2]}
