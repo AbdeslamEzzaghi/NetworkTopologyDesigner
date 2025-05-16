@@ -27,7 +27,8 @@ export function useNetworkDesign() {
       type,
       label: type.charAt(0).toUpperCase() + type.slice(1),
       x,
-      y
+      y,
+      size: 1 // Default size
     };
     
     setDevices(prev => [...prev, newDevice]);

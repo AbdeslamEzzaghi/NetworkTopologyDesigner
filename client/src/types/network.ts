@@ -10,6 +10,7 @@ export interface Device {
   label: string;
   x: number;
   y: number;
+  size?: number; // Size multiplier, default is 1
 }
 
 export enum ConnectionType {

@@ -46,18 +46,33 @@ export function DesignCanvas({
   const [showTips, setShowTips] = useState(true);
 
   // Render device icons using Material Icon symbol
-  const renderDeviceIcon = (deviceType: string) => {
+  const renderDeviceIcon = (deviceType: string, size: number = 1) => {
     const iconData = DEVICE_TYPES.find(d => d.id === deviceType);
     
     if (!iconData) return null;
+
+    // Special color for cable connector
+    const isConnector = deviceType === 'cable_connector';
+    const iconColor = isConnector ? '#ef4444' : '#3f51b5';
+    
+    // Apply size multiplier
+    const baseRadius = 20;
+    const baseFontSize = 20;
+    const baseWidth = 40;
+    const baseHeight = 40;
+    
+    const radius = baseRadius * size;
+    const fontSize = baseFontSize * size;
+    const width = baseWidth * size;
+    const height = baseHeight * size;
     
     return (
       <>
         {/* Circle background */}
         <Circle
-          radius={20}
+          radius={radius}
           fill="#FFFFFF"
-          stroke="#3f51b5"
+          stroke={iconColor}
           strokeWidth={2}
         />
         
@@ -65,14 +80,14 @@ export function DesignCanvas({
         <Text
           text={iconData.icon}
           fontFamily="Material Icons"
-          fontSize={20}
-          fill="#3f51b5"
+          fontSize={fontSize}
+          fill={iconColor}
           align="center"
           verticalAlign="middle"
-          width={40}
-          height={40}
-          offsetX={20}
-          offsetY={20}
+          width={width}
+          height={height}
+          offsetX={width / 2}
+          offsetY={height / 2}
         />
       </>
     );
@@ -135,8 +150,41 @@ export function DesignCanvas({
     e.preventDefault();
     
     if (deviceId) {
-      if (confirm(translate('dialog.removeDevice'))) {
-        onDeviceRemove(deviceId);
+      // Create a custom context menu for devices
+      const device = devices.find(d => d.id === deviceId);
+      if (!device) return;
+      
+      // Ask for action: resize or remove
+      const action = prompt(`Device: ${device.label}\nOptions:\n1. Resize\n2. Remove\nEnter option number:`);
+      
+      if (action === '1') {
+        // Resize device
+        const newSize = prompt(`Enter new size (0.5 to 2.0).\nCurrent size: ${device.size || 1}`);
+        if (newSize) {
+          const size = parseFloat(newSize);
+          if (!isNaN(size) && size >= 0.5 && size <= 2.0) {
+            // Update the device size
+            const updatedDevice = { ...device, size };
+            onDeviceRemove(deviceId); // Remove old device
+            onDeviceAdd(device.type, device.x, device.y); // Add new device with same position
+            
+            // Update the newly added device with the proper label and size
+            const newDevices = [...devices];
+            const lastDevice = newDevices[newDevices.length - 1];
+            if (lastDevice) {
+              lastDevice.label = device.label;
+              lastDevice.size = size;
+              onDeviceRename(lastDevice.id, device.label);
+            }
+          } else {
+            alert('Size must be between 0.5 and 2.0');
+          }
+        }
+      } else if (action === '2') {
+        // Remove device
+        if (confirm(translate('dialog.removeDevice'))) {
+          onDeviceRemove(deviceId);
+        }
       }
     } else if (connectionId) {
       if (confirm(translate('dialog.removeConnection'))) {
@@ -213,13 +261,8 @@ export function DesignCanvas({
                 onContextMenu={(e) => handleContextMenu(e.evt as unknown as React.MouseEvent, null, connection.id)}
               >
                 {isBusConnection ? (
-                  // For standalone Bus, just make it a straight line extending up
-                  <Line
-                    points={[source.x, source.y, source.x, source.y - 40]}
-                    stroke={getConnectionColor()}
-                    strokeWidth={getStrokeWidth()}
-                    lineCap="round"
-                  />
+                  // For Bus connections, don't render anything special
+                  <></>
                 ) : (
                   // Normal connection rendering
                   <Line
@@ -252,8 +295,8 @@ export function DesignCanvas({
                 onDblClick={() => handleDeviceDblClick(device.id)}
                 onContextMenu={(e) => handleContextMenu(e.evt as unknown as React.MouseEvent, device.id, null)}
               >
-                {/* Render device icon directly */}
-                {renderDeviceIcon(device.type)}
+                {/* Render device icon directly with size */}
+                {renderDeviceIcon(device.type, device.size || 1)}
                 
                 {/* Device label */}
                 <Text
