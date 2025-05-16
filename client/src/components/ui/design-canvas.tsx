@@ -51,9 +51,10 @@ export function DesignCanvas({
     
     if (!iconData) return null;
 
-    // Special color for cable connector
-    const isConnector = deviceType === 'cable_connector';
-    const iconColor = isConnector ? '#ef4444' : '#3f51b5';
+    // Special color for certain devices (red)
+    const redDevices = ['cable_connector', 'wall_phone_jack', 'bus_closure'];
+    const isRedDevice = redDevices.includes(deviceType);
+    const iconColor = isRedDevice ? '#ef4444' : '#3f51b5';
     
     // Apply size multiplier
     const baseRadius = 20;
@@ -154,30 +155,41 @@ export function DesignCanvas({
       const device = devices.find(d => d.id === deviceId);
       if (!device) return;
       
-      // Ask for action: resize or remove
-      const action = prompt(`Device: ${device.label}\nOptions:\n1. Resize\n2. Remove\nEnter option number:`);
+      // Ask for action: resize or remove or adjust wireless range
+      const action = prompt(`Device: ${device.label}\nOptions:\n1. Resize Device\n2. Remove Device\n3. Adjust Wireless Range (if applicable)\nEnter option number:`);
       
       if (action === '1') {
         // Resize device
-        const newSize = prompt(`Enter new size (0.5 to 2.0).\nCurrent size: ${device.size || 1}`);
-        if (newSize) {
-          const size = parseFloat(newSize);
-          if (!isNaN(size) && size >= 0.5 && size <= 2.0) {
-            // Update the device size
-            const updatedDevice = { ...device, size };
-            onDeviceRemove(deviceId); // Remove old device
-            onDeviceAdd(device.type, device.x, device.y); // Add new device with same position
+        const currentSize = device.size || 1;
+        const currentPercent = Math.round(currentSize * 100);
+        const newSizeStr = prompt(`Enter new size in percentage (25% to 200%).\nCurrent size: ${currentPercent}%`);
+        
+        if (newSizeStr) {
+          // Parse percentage input
+          let numericValue = parseFloat(newSizeStr.replace('%', ''));
+          if (!isNaN(numericValue)) {
+            // Convert percentage to decimal value
+            const size = numericValue / 100;
             
-            // Update the newly added device with the proper label and size
-            const newDevices = [...devices];
-            const lastDevice = newDevices[newDevices.length - 1];
-            if (lastDevice) {
-              lastDevice.label = device.label;
-              lastDevice.size = size;
-              onDeviceRename(lastDevice.id, device.label);
+            if (size >= 0.25 && size <= 2.0) {
+              // Update the device size
+              const updatedDevice = { ...device, size };
+              onDeviceRemove(deviceId); // Remove old device
+              onDeviceAdd(device.type, device.x, device.y); // Add new device with same position
+              
+              // Update the newly added device with the proper label and size
+              const newDevices = [...devices];
+              const lastDevice = newDevices[newDevices.length - 1];
+              if (lastDevice) {
+                lastDevice.label = device.label;
+                lastDevice.size = size;
+                onDeviceRename(lastDevice.id, device.label);
+              }
+            } else {
+              alert('Size must be between 25% and 200%');
             }
           } else {
-            alert('Size must be between 0.5 and 2.0');
+            alert('Please enter a valid percentage');
           }
         }
       } else if (action === '2') {
@@ -265,14 +277,31 @@ export function DesignCanvas({
                   <></>
                 ) : (
                   // Normal connection rendering
-                  <Line
-                    points={[source.x, source.y, target.x, target.y]}
-                    stroke={getConnectionColor()}
-                    strokeWidth={getStrokeWidth()}
-                    dash={connection.type === ConnectionType.WIRELESS ? [5, 3] : undefined}
-                    lineCap="round"
-                    lineJoin="round"
-                  />
+                  <>
+                    <Line
+                      points={[source.x, source.y, target.x, target.y]}
+                      stroke={getConnectionColor()}
+                      strokeWidth={getStrokeWidth()}
+                      dash={connection.type === ConnectionType.WIRELESS ? [5, 3] : undefined}
+                      lineCap="round"
+                      lineJoin="round"
+                    />
+                    
+                    {/* Add wireless coverage indication if this is a wireless connection */}
+                    {connection.type === ConnectionType.WIRELESS && connection.range && (
+                      <Circle
+                        x={source.x}
+                        y={source.y}
+                        radius={connection.range || 100}
+                        stroke={getConnectionColor()}
+                        strokeWidth={1}
+                        dash={[2, 2]}
+                        opacity={0.3}
+                        fill={getConnectionColor()}
+                        fillOpacity={0.05}
+                      />
+                    )}
+                  </>
                 )}
               </Group>
             );

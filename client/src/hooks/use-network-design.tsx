@@ -247,7 +247,9 @@ export function useNetworkDesign() {
           id: generateId(),
           sourceId: connectionMode.sourceId,
           targetId: deviceId,
-          type: connectionMode.type
+          type: connectionMode.type,
+          // Add default range for wireless connections
+          ...(connectionMode.type === ConnectionType.WIRELESS ? { range: 100 } : {})
         };
         
         // Check if connection already exists

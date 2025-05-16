@@ -76,4 +76,5 @@ export const DEVICE_TYPES = [
   { id: 'tv', name: 'Smart TV', icon: 'tv' },
   { id: 'wall_phone_jack', name: 'Wall Phone Jack', icon: 'settings_ethernet' },
   { id: 'cable_connector', name: 'Cable Connector', icon: 'cable' },
+  { id: 'bus_closure', name: 'Bus Closure', icon: 'fiber_manual_record' },
 ];
