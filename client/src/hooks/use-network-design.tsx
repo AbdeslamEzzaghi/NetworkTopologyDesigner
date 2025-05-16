@@ -173,28 +173,46 @@ export function useNetworkDesign() {
   const handleDeviceSelect = useCallback((deviceId: string) => {
     if (!connectionMode.active || !connectionMode.type) return;
     
-    if (!connectionMode.sourceId) {
-      // First device selected
-      setConnectionMode(prev => ({
-        ...prev,
-        sourceId: deviceId
-      }));
-    } else if (connectionMode.sourceId !== deviceId) {
-      // Second device selected, create connection
-      const newConnection: Connection = {
-        id: generateId(),
-        sourceId: connectionMode.sourceId,
-        targetId: deviceId,
-        type: connectionMode.type
-      };
-      
-      // Check if connection already exists
-      const connectionExists = connections.some(
-        c => (c.sourceId === connectionMode.sourceId && c.targetId === deviceId) ||
-             (c.sourceId === deviceId && c.targetId === connectionMode.sourceId)
-      );
-      
-      if (!connectionExists) {
+    // Special handling for Main Cable (Bus) - can be created with just one device
+    if (connectionMode.type === ConnectionType.MAIN_CABLE) {
+      if (!connectionMode.sourceId) {
+        // First device selected - for bus cable, we can set both source and target as the same device
+        // This allows the bus cable to exist without requiring two different endpoints
+        const busConnection: Connection = {
+          id: generateId(),
+          sourceId: deviceId,
+          targetId: deviceId, // Same device - indicates a standalone bus
+          type: ConnectionType.MAIN_CABLE
+        };
+        
+        setConnections(prev => [...prev, busConnection]);
+        
+        // Add to history
+        const action: HistoryAction = {
+          type: 'ADD_CONNECTION',
+          payload: busConnection,
+          undo: () => setConnections(prev => prev.filter(c => c.id !== busConnection.id)),
+          redo: () => setConnections(prev => [...prev, busConnection])
+        };
+        
+        addToHistory(action);
+        
+        // Keep connection mode active to allow connecting more devices to the bus
+        setConnectionMode({
+          active: true,
+          type: connectionMode.type,
+          sourceId: deviceId // Keep track of the bus source
+        });
+      } else {
+        // Additional device selected - connect to the bus
+        const newConnection: Connection = {
+          id: generateId(),
+          sourceId: connectionMode.sourceId,
+          targetId: deviceId,
+          type: ConnectionType.MAIN_CABLE
+        };
+        
+        // Allow connections to existing bus connections
         setConnections(prev => [...prev, newConnection]);
         
         // Add to history
@@ -206,14 +224,58 @@ export function useNetworkDesign() {
         };
         
         addToHistory(action);
+        
+        // Keep the same source for additional connections
+        setConnectionMode({
+          active: true,
+          type: connectionMode.type,
+          sourceId: connectionMode.sourceId
+        });
       }
-      
-      // Reset connection mode
-      setConnectionMode({
-        active: true, // Keep active to allow more connections of same type
-        type: connectionMode.type,
-        sourceId: null
-      });
+    } else {
+      // Normal connection handling for other connection types
+      if (!connectionMode.sourceId) {
+        // First device selected
+        setConnectionMode(prev => ({
+          ...prev,
+          sourceId: deviceId
+        }));
+      } else if (connectionMode.sourceId !== deviceId) {
+        // Second device selected, create connection
+        const newConnection: Connection = {
+          id: generateId(),
+          sourceId: connectionMode.sourceId,
+          targetId: deviceId,
+          type: connectionMode.type
+        };
+        
+        // Check if connection already exists
+        const connectionExists = connections.some(
+          c => (c.sourceId === connectionMode.sourceId && c.targetId === deviceId) ||
+               (c.sourceId === deviceId && c.targetId === connectionMode.sourceId)
+        );
+        
+        if (!connectionExists) {
+          setConnections(prev => [...prev, newConnection]);
+          
+          // Add to history
+          const action: HistoryAction = {
+            type: 'ADD_CONNECTION',
+            payload: newConnection,
+            undo: () => setConnections(prev => prev.filter(c => c.id !== newConnection.id)),
+            redo: () => setConnections(prev => [...prev, newConnection])
+          };
+          
+          addToHistory(action);
+        }
+        
+        // Reset connection mode
+        setConnectionMode({
+          active: true, // Keep active to allow more connections of same type
+          type: connectionMode.type,
+          sourceId: null
+        });
+      }
     }
   }, [connectionMode, connections]);
 

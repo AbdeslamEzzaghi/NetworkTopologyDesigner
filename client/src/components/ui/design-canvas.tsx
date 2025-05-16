@@ -183,30 +183,66 @@ export function DesignCanvas({
             
             if (!source || !target) return null;
             
+            // Determine connection color
+            const getConnectionColor = () => {
+              switch (connection.type) {
+                case ConnectionType.WIRED: return '#3f51b5'; // Default blue
+                case ConnectionType.RJ11: return '#f59e0b'; // Amber
+                case ConnectionType.RJ45: return '#3b82f6'; // Blue
+                case ConnectionType.FIBER: return '#10b981'; // Green
+                case ConnectionType.PHONE: return '#6b7280'; // Gray
+                case ConnectionType.WIRELESS: return '#8b5cf6'; // Purple
+                case ConnectionType.MAIN_CABLE: return '#ef4444'; // Red
+                default: return '#3f51b5';
+              }
+            };
+            
+            // Determine stroke width
+            const getStrokeWidth = () => {
+              if (connection.type === ConnectionType.FIBER) return 3;
+              if (connection.type === ConnectionType.MAIN_CABLE) return 4;
+              return 2;
+            };
+            
+            // Special rendering for Main Cable (Bus) when source and target are the same device
+            const isBusConnection = connection.type === ConnectionType.MAIN_CABLE && connection.sourceId === connection.targetId;
+            
             return (
               <Group 
                 key={connection.id}
                 onContextMenu={(e) => handleContextMenu(e.evt as unknown as React.MouseEvent, null, connection.id)}
               >
-                <Line
-                  points={[source.x, source.y, target.x, target.y]}
-                  stroke={(() => {
-                    switch (connection.type) {
-                      case ConnectionType.WIRED: return '#3f51b5'; // Default blue
-                      case ConnectionType.RJ11: return '#f59e0b'; // Amber
-                      case ConnectionType.RJ45: return '#3b82f6'; // Blue
-                      case ConnectionType.FIBER: return '#10b981'; // Green
-                      case ConnectionType.PHONE: return '#6b7280'; // Gray
-                      case ConnectionType.WIRELESS: return '#8b5cf6'; // Purple
-                      case ConnectionType.MAIN_CABLE: return '#ef4444'; // Red
-                      default: return '#3f51b5';
-                    }
-                  })()}
-                  strokeWidth={connection.type === ConnectionType.FIBER ? 3 : (connection.type === ConnectionType.MAIN_CABLE ? 4 : 2)}
-                  dash={connection.type === ConnectionType.WIRELESS ? [5, 3] : undefined}
-                  lineCap="round"
-                  lineJoin="round"
-                />
+                {isBusConnection ? (
+                  // For standalone Bus, render an arc above the device
+                  <>
+                    <Circle 
+                      x={source.x}
+                      y={source.y - 30}
+                      radius={15}
+                      stroke={getConnectionColor()}
+                      strokeWidth={getStrokeWidth()}
+                      dash={[3, 2]}
+                    />
+                    <Text
+                      x={source.x - 35}
+                      y={source.y - 55}
+                      text="Bus"
+                      fontSize={12}
+                      fill={getConnectionColor()}
+                      align="center"
+                    />
+                  </>
+                ) : (
+                  // Normal connection rendering
+                  <Line
+                    points={[source.x, source.y, target.x, target.y]}
+                    stroke={getConnectionColor()}
+                    strokeWidth={getStrokeWidth()}
+                    dash={connection.type === ConnectionType.WIRELESS ? [5, 3] : undefined}
+                    lineCap="round"
+                    lineJoin="round"
+                  />
+                )}
               </Group>
             );
           })}
