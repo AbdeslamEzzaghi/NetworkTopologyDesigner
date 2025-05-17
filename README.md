@@ -2,7 +2,7 @@
 
 A comprehensive educational web application that enables students to create detailed network diagrams through an intuitive drag-and-drop interface with advanced device and connection modeling capabilities.
 
-![Network Designer Screenshot](screenshot.png)
+![Network Designer Screenshot](https://github.com/user-attachments/assets/efde91a6-7d9b-44da-8756-511ea0e02345)
 
 ## Features
 
